@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>我が家の家計簿</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --card-bg: #ffffff;
+    --border: #e0e4e8;
+    --text: #222;
+    --muted: #777;
+    --accent: #2d6cdf;
+    --danger: #d9534f;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Hiragino Kaku Gothic ProN", "Meiryo", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  header {
+    background: var(--accent);
+    color: #fff;
+    padding: 16px 20px;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .card h2 {
+    margin: 0 0 12px;
+    font-size: 1rem;
+  }
+
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .month-nav button {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .month-nav .month-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    min-width: 110px;
+    text-align: center;
+  }
+
+  .total-amount {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .cat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  .cat-row .cat-name {
+    width: 110px;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cat-row .bar-track {
+    flex: 1;
+    background: #eef1f5;
+    border-radius: 6px;
+    height: 10px;
+    overflow: hidden;
+  }
+
+  .cat-row .bar-fill {
+    height: 100%;
+    background: var(--accent);
+  }
+
+  .cat-row .cat-amount {
+    width: 90px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  form.expense-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  form.expense-form .full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 9px 16px;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-outline {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-danger {
+    background: none;
+    color: var(--danger);
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  .add-category {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .add-category input {
+    flex: 1;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  td.amount {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 24px 0;
+  }
+
+  .footer-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  @media (max-width: 480px) {
+    form.expense-form {
+      grid-template-columns: 1fr;
+    }
+    .cat-row .cat-name {
+      width: 80px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>我が家の家計簿</h1>
+</header>
+
+<main>
+
+  <!-- Month summary -->
+  <div class="card">
+    <div class="month-nav">
+      <button id="prevMonth">&lt;</button>
+      <div class="month-label" id="monthLabel"></div>
+      <button id="nextMonth">&gt;</button>
+    </div>
+
+    <div class="total-amount" id="totalAmount">¥0</div>
+
+    <div id="categoryBreakdown"></div>
+  </div>
+
+  <!-- Add expense -->
+  <div class="card">
+    <h2>支出を追加</h2>
+    <form class="expense-form" id="expenseForm">
+      <div>
+        <label for="categorySelect">カテゴリ</label>
+        <select id="categorySelect" required></select>
+      </div>
+
+      <div>
+        <label for="amountInput">金額</label>
+        <input type="number" id="amountInput" min="0" step="1" placeholder="例: 3000" required />
+      </div>
+
+      <div>
+        <label for="dateInput">日付</label>
+        <input type="date" id="dateInput" required />
+      </div>
+
+      <div>
+        <label for="detailInput">詳細（例: ミルク）</label>
+        <input type="text" id="detailInput" placeholder="任意" />
+      </div>
+
+      <div class="full">
+        <label for="memoInput">メモ</label>
+        <input type="text" id="memoInput" placeholder="任意" />
+      </div>
+
+      <div class="full">
+        <button type="submit" class="btn btn-primary">追加する</button>
+      </div>
+    </form>
+
+    <div class="add-category">
+      <input type="text" id="newCategoryInput" placeholder="新しいカテゴリ名" />
+      <button class="btn btn-outline" id="addCategoryBtn">カテゴリ追加</button>
+    </div>
+  </div>
+
+  <!-- List -->
+  <div class="card">
+    <h2>支出一覧（<span id="listMonthLabel"></span>）</h2>
+    <div id="expenseListWrap">
+      <table id="expenseTable">
+        <thead>
+          <tr>
+            <th>日付</th>
+            <th>カテゴリ</th>
+            <th>詳細/メモ</th>
+            <th>金額</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="expenseTbody"></tbody>
+      </table>
+      <div class="empty" id="emptyMsg" style="display:none;">この月の記録はまだありません</div>
+    </div>
+  </div>
+
+  <!-- Backup -->
+  <div class="card">
+    <h2>バックアップ</h2>
+    <div class="footer-actions">
+      <button class="btn btn-outline" id="exportBtn">JSONで書き出す</button>
+      <button class="btn btn-outline" id="importBtn">JSONから読み込む</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" style="display:none;" />
+  </div>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "myfamily_expenses_v1";
+  const CATEGORY_KEY = "myfamily_categories_v1";
+
+  const DEFAULT_CATEGORIES = ["赤ちゃん費用", "家賃", "光熱費", "食費", "個人費用"];
+
+  /** @returns {Array} */
+  function loadExpenses() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      console.error("failed to load expenses", e);
+      return [];
+    }
+  }
+
+  function saveExpenses(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  function loadCategories() {
+    try {
+      const raw = localStorage.getItem(CATEGORY_KEY);
+      const list = raw ? JSON.parse(raw) : null;
+      return list && list.length ? list : DEFAULT_CATEGORIES.slice();
+    } catch (e) {
+      return DEFAULT_CATEGORIES.slice();
+    }
+  }
+
+  function saveCategories(list) {
+    localStorage.setItem(CATEGORY_KEY, JSON.stringify(list));
+  }
+
+  let expenses = loadExpenses();
+  let categories = loadCategories();
+  let currentMonth = new Date().toISOString().substring(0, 7); // YYYY-MM
+
+  const monthLabelEl = document.getElementById("monthLabel");
+  const listMonthLabelEl = document.getElementById("listMonthLabel");
+  const totalAmountEl = document.getElementById("totalAmount");
+  const categoryBreakdownEl = document.getElementById("categoryBreakdown");
+  const expenseTbody = document.getElementById("expenseTbody");
+  const emptyMsg = document.getElementById("emptyMsg");
+  const categorySelect = document.getElementById("categorySelect");
+  const dateInput = document.getElementById("dateInput");
+
+  function formatYen(n) {
+    return "¥" + Math.round(n).toLocaleString("ja-JP");
+  }
+
+  function formatMonthLabel(ym) {
+    const [y, m] = ym.split("-");
+    return y + "年" + parseInt(m, 10) + "月";
+  }
+
+  function shiftMonth(ym, delta) {
+    const [y, m] = ym.split("-").map(Number);
+    const d = new Date(y, m - 1 + delta, 1);
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+  }
+
+  function renderCategoryOptions() {
+    categorySelect.innerHTML = "";
+    categories.forEach((cat) => {
+      const opt = document.createElement("option");
+      opt.value = cat;
+      opt.textContent = cat;
+      categorySelect.appendChild(opt);
+    });
+  }
+
+  function expensesForMonth(ym) {
+    return expenses.filter((e) => e.date.substring(0, 7) === ym);
+  }
+
+  function render() {
+    monthLabelEl.textContent = formatMonthLabel(currentMonth);
+    listMonthLabelEl.textContent = formatMonthLabel(currentMonth);
+
+    const monthExpenses = expensesForMonth(currentMonth);
+    const total = monthExpenses.reduce((sum, e) => sum + e.amount, 0);
+    totalAmountEl.textContent = formatYen(total);
+
+    // category breakdown
+    const byCategory = {};
+    monthExpenses.forEach((e) => {
+      byCategory[e.category] = (byCategory[e.category] || 0) + e.amount;
+    });
+
+    categoryBreakdownEl.innerHTML = "";
+    const maxAmount = Math.max(1, ...Object.values(byCategory));
+
+    categories
+      .filter((cat) => byCategory[cat])
+      .sort((a, b) => byCategory[b] - byCategory[a])
+      .forEach((cat) => {
+        const amount = byCategory[cat];
+        const row = document.createElement("div");
+        row.className = "cat-row";
+        row.innerHTML =
+          '<div class="cat-name">' + escapeHtml(cat) + '</div>' +
+          '<div class="bar-track"><div class="bar-fill" style="width:' +
+          Math.round((amount / maxAmount) * 100) +
+          '%"></div></div>' +
+          '<div class="cat-amount">' + formatYen(amount) + '</div>';
+        categoryBreakdownEl.appendChild(row);
+      });
+
+    // list
+    expenseTbody.innerHTML = "";
+    const sorted = monthExpenses.slice().sort((a, b) => b.date.localeCompare(a.date));
+
+    if (sorted.length === 0) {
+      emptyMsg.style.display = "block";
+    } else {
+      emptyMsg.style.display = "none";
+      sorted.forEach((e) => {
+        const tr = document.createElement("tr");
+        const detailMemo = [e.detail, e.memo].filter(Boolean).join(" / ");
+        tr.innerHTML =
+          "<td>" + e.date + "</td>" +
+          "<td>" + escapeHtml(e.category) + "</td>" +
+          "<td>" + escapeHtml(detailMemo) + "</td>" +
+          '<td class="amount">' + formatYen(e.amount) + "</td>" +
+          '<td><button class="btn-danger" data-id="' + e.id + '">削除</button></td>';
+        expenseTbody.appendChild(tr);
+      });
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : str;
+    return div.innerHTML;
+  }
+
+  // -- events --
+
+  document.getElementById("prevMonth").addEventListener("click", () => {
+    currentMonth = shiftMonth(currentMonth, -1);
+    render();
+  });
+
+  document.getElementById("nextMonth").addEventListener("click", () => {
+    currentMonth = shiftMonth(currentMonth, 1);
+    render();
+  });
+
+  document.getElementById("expenseForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const category = categorySelect.value;
+    const amount = Number(document.getElementById("amountInput").value);
+    const date = dateInput.value;
+    const detail = document.getElementById("detailInput").value.trim();
+    const memo = document.getElementById("memoInput").value.trim();
+
+    if (!category || !amount || !date) return;
+
+    expenses.push({
+      id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
+      category,
+      amount,
+      date,
+      detail,
+      memo
+    });
+
+    saveExpenses(expenses);
+
+    currentMonth = date.substring(0, 7);
+    document.getElementById("expenseForm").reset();
+    dateInput.value = new Date().toISOString().substring(0, 10);
+    render();
+  });
+
+  document.getElementById("addCategoryBtn").addEventListener("click", () => {
+    const input = document.getElementById("newCategoryInput");
+    const name = input.value.trim();
+    if (!name || categories.includes(name)) return;
+
+    categories.push(name);
+    saveCategories(categories);
+    renderCategoryOptions();
+    categorySelect.value = name;
+    input.value = "";
+  });
+
+  expenseTbody.addEventListener("click", (event) => {
+    const btn = event.target.closest("button[data-id]");
+    if (!btn) return;
+
+    const id = btn.getAttribute("data-id");
+    if (!confirm("この記録を削除しますか？")) return;
+
+    expenses = expenses.filter((e) => e.id !== id);
+    saveExpenses(expenses);
+    render();
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    const data = { expenses, categories };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "myfamily-expenses-" + new Date().toISOString().substring(0, 10) + ".json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", () => {
+    document.getElementById("importFile").click();
+  });
+
+  document.getElementById("importFile").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!Array.isArray(data.expenses)) throw new Error("invalid file");
+
+        if (!confirm("現在のデータを置き換えて読み込みます。よろしいですか？")) return;
+
+        expenses = data.expenses;
+        categories = Array.isArray(data.categories) && data.categories.length ? data.categories : DEFAULT_CATEGORIES.slice();
+
+        saveExpenses(expenses);
+        saveCategories(categories);
+        renderCategoryOptions();
+        render();
+      } catch (e) {
+        alert("読み込みに失敗しました。正しいJSONファイルを選択してください。");
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  // init
+  dateInput.value = new Date().toISOString().substring(0, 10);
+  renderCategoryOptions();
+  render();
+})();
+</script>
+
+</body>
+</html>
