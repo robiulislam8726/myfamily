@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>我が家の家計簿</title>
+<title>Family Expense Tracker</title>
 <style>
   :root {
     --bg: #f4f6f8;
@@ -20,7 +20,7 @@
 
   body {
     margin: 0;
-    font-family: "Hiragino Kaku Gothic ProN", "Meiryo", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
   }
@@ -233,7 +233,7 @@
 <body>
 
 <header>
-  <h1>我が家の家計簿</h1>
+  <h1>Family Expense Tracker</h1>
 </header>
 
 <main>
@@ -253,70 +253,70 @@
 
   <!-- Add expense -->
   <div class="card">
-    <h2>支出を追加</h2>
+    <h2>Add Expense</h2>
     <form class="expense-form" id="expenseForm">
       <div>
-        <label for="categorySelect">カテゴリ</label>
+        <label for="categorySelect">Category</label>
         <select id="categorySelect" required></select>
       </div>
 
       <div>
-        <label for="amountInput">金額</label>
-        <input type="number" id="amountInput" min="0" step="1" placeholder="例: 3000" required />
+        <label for="amountInput">Amount</label>
+        <input type="number" id="amountInput" min="0" step="1" placeholder="e.g. 3000" required />
       </div>
 
       <div>
-        <label for="dateInput">日付</label>
+        <label for="dateInput">Date</label>
         <input type="date" id="dateInput" required />
       </div>
 
       <div>
-        <label for="detailInput">詳細（例: ミルク）</label>
-        <input type="text" id="detailInput" placeholder="任意" />
+        <label for="detailInput">Detail (e.g. Milk)</label>
+        <input type="text" id="detailInput" placeholder="optional" />
       </div>
 
       <div class="full">
-        <label for="memoInput">メモ</label>
-        <input type="text" id="memoInput" placeholder="任意" />
+        <label for="memoInput">Memo</label>
+        <input type="text" id="memoInput" placeholder="optional" />
       </div>
 
       <div class="full">
-        <button type="submit" class="btn btn-primary">追加する</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </div>
     </form>
 
     <div class="add-category">
-      <input type="text" id="newCategoryInput" placeholder="新しいカテゴリ名" />
-      <button class="btn btn-outline" id="addCategoryBtn">カテゴリ追加</button>
+      <input type="text" id="newCategoryInput" placeholder="New category name" />
+      <button class="btn btn-outline" id="addCategoryBtn">Add Category</button>
     </div>
   </div>
 
   <!-- List -->
   <div class="card">
-    <h2>支出一覧（<span id="listMonthLabel"></span>）</h2>
+    <h2>Expense List (<span id="listMonthLabel"></span>)</h2>
     <div id="expenseListWrap">
       <table id="expenseTable">
         <thead>
           <tr>
-            <th>日付</th>
-            <th>カテゴリ</th>
-            <th>詳細/メモ</th>
-            <th>金額</th>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Detail / Memo</th>
+            <th>Amount</th>
             <th></th>
           </tr>
         </thead>
         <tbody id="expenseTbody"></tbody>
       </table>
-      <div class="empty" id="emptyMsg" style="display:none;">この月の記録はまだありません</div>
+      <div class="empty" id="emptyMsg" style="display:none;">No expenses recorded this month</div>
     </div>
   </div>
 
   <!-- Backup -->
   <div class="card">
-    <h2>バックアップ</h2>
+    <h2>Backup</h2>
     <div class="footer-actions">
-      <button class="btn btn-outline" id="exportBtn">JSONで書き出す</button>
-      <button class="btn btn-outline" id="importBtn">JSONから読み込む</button>
+      <button class="btn btn-outline" id="exportBtn">Export as JSON</button>
+      <button class="btn btn-outline" id="importBtn">Import from JSON</button>
     </div>
     <input type="file" id="importFile" accept="application/json" style="display:none;" />
   </div>
@@ -330,7 +330,7 @@
   const STORAGE_KEY = "myfamily_expenses_v1";
   const CATEGORY_KEY = "myfamily_categories_v1";
 
-  const DEFAULT_CATEGORIES = ["赤ちゃん費用", "家賃", "光熱費", "食費", "個人費用"];
+  const DEFAULT_CATEGORIES = ["Baby Expenses", "Rent", "Utilities", "Food", "Personal"];
 
   /** @returns {Array} */
   function loadExpenses() {
@@ -375,12 +375,13 @@
   const dateInput = document.getElementById("dateInput");
 
   function formatYen(n) {
-    return "¥" + Math.round(n).toLocaleString("ja-JP");
+    return "¥" + Math.round(n).toLocaleString("en-US");
   }
 
   function formatMonthLabel(ym) {
-    const [y, m] = ym.split("-");
-    return y + "年" + parseInt(m, 10) + "月";
+    const [y, m] = ym.split("-").map(Number);
+    const d = new Date(y, m - 1, 1);
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "long" });
   }
 
   function shiftMonth(ym, delta) {
@@ -452,7 +453,7 @@
           "<td>" + escapeHtml(e.category) + "</td>" +
           "<td>" + escapeHtml(detailMemo) + "</td>" +
           '<td class="amount">' + formatYen(e.amount) + "</td>" +
-          '<td><button class="btn-danger" data-id="' + e.id + '">削除</button></td>';
+          '<td><button class="btn-danger" data-id="' + e.id + '">Delete</button></td>';
         expenseTbody.appendChild(tr);
       });
     }
@@ -521,7 +522,7 @@
     if (!btn) return;
 
     const id = btn.getAttribute("data-id");
-    if (!confirm("この記録を削除しますか？")) return;
+    if (!confirm("Delete this record?")) return;
 
     expenses = expenses.filter((e) => e.id !== id);
     saveExpenses(expenses);
@@ -553,7 +554,7 @@
         const data = JSON.parse(reader.result);
         if (!Array.isArray(data.expenses)) throw new Error("invalid file");
 
-        if (!confirm("現在のデータを置き換えて読み込みます。よろしいですか？")) return;
+        if (!confirm("This will replace your current data. Continue?")) return;
 
         expenses = data.expenses;
         categories = Array.isArray(data.categories) && data.categories.length ? data.categories : DEFAULT_CATEGORIES.slice();
@@ -563,7 +564,7 @@
         renderCategoryOptions();
         render();
       } catch (e) {
-        alert("読み込みに失敗しました。正しいJSONファイルを選択してください。");
+        alert("Failed to load file. Please select a valid JSON file.");
       }
     };
     reader.readAsText(file);
