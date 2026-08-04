@@ -22,11 +22,33 @@ header {
   background: var(--accent);
   color: #fff;
   padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 header h1 {
   margin: 0;
   font-size: 1.3rem;
+}
+
+header .header-note {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  header {
+    justify-content: flex-start;
+  }
+  header .header-note {
+    white-space: normal;
+    font-size: 0.75rem;
+  }
 }
 
 main {
