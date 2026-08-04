@@ -121,6 +121,19 @@ main {
   }
 }
 
+.photo-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.photo-card .side-photo {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: 50% 35%;
+}
+
 .quick-card {
   padding: 14px;
 }
