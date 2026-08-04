@@ -34,30 +34,29 @@ header h1 {
   font-size: 1.3rem;
 }
 
-header .header-notes {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-}
-
 header .header-note {
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   opacity: 0.9;
   white-space: nowrap;
+}
+
+header .header-note-middle {
+  text-align: center;
+}
+
+header .header-note-right {
+  text-align: right;
 }
 
 @media (max-width: 480px) {
   header {
     justify-content: flex-start;
   }
-  header .header-notes {
-    align-items: flex-start;
-  }
   header .header-note {
     white-space: normal;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    text-align: left;
   }
 }
 
