@@ -29,6 +29,22 @@ header {
   flex-wrap: wrap;
 }
 
+header .header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 35%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
 header h1 {
   margin: 0;
   font-size: 1.3rem;
