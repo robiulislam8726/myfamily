@@ -4,231 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Family Expense Tracker</title>
-<style>
-  :root {
-    --bg: #f4f6f8;
-    --card-bg: #ffffff;
-    --border: #e0e4e8;
-    --text: #222;
-    --muted: #777;
-    --accent: #2d6cdf;
-    --danger: #d9534f;
-    --radius: 10px;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-  }
-
-  header {
-    background: var(--accent);
-    color: #fff;
-    padding: 16px 20px;
-  }
-
-  header h1 {
-    margin: 0;
-    font-size: 1.3rem;
-  }
-
-  main {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 16px;
-  }
-
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-
-  .card h2 {
-    margin: 0 0 12px;
-    font-size: 1rem;
-  }
-
-  .month-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  .month-nav button {
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .month-nav .month-label {
-    font-size: 1.1rem;
-    font-weight: 700;
-    min-width: 110px;
-    text-align: center;
-  }
-
-  .total-amount {
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-
-  .cat-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-  }
-
-  .cat-row .cat-name {
-    width: 110px;
-    flex-shrink: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .cat-row .bar-track {
-    flex: 1;
-    background: #eef1f5;
-    border-radius: 6px;
-    height: 10px;
-    overflow: hidden;
-  }
-
-  .cat-row .bar-fill {
-    height: 100%;
-    background: var(--accent);
-  }
-
-  .cat-row .cat-amount {
-    width: 90px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  form.expense-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  form.expense-form .full {
-    grid-column: 1 / -1;
-  }
-
-  label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-
-  input, select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.95rem;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 9px 16px;
-    border-radius: 6px;
-    border: none;
-    font-size: 0.95rem;
-    cursor: pointer;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .btn-outline {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-
-  .btn-danger {
-    background: none;
-    color: var(--danger);
-    border: none;
-    cursor: pointer;
-    font-size: 0.85rem;
-  }
-
-  .add-category {
-    display: flex;
-    gap: 8px;
-    margin-top: 6px;
-  }
-
-  .add-category input {
-    flex: 1;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-  }
-
-  th, td {
-    text-align: left;
-    padding: 8px 6px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  th {
-    color: var(--muted);
-    font-weight: 600;
-    font-size: 0.8rem;
-  }
-
-  td.amount {
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  .empty {
-    text-align: center;
-    color: var(--muted);
-    padding: 24px 0;
-  }
-
-  .footer-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  @media (max-width: 480px) {
-    form.expense-form {
-      grid-template-columns: 1fr;
-    }
-    .cat-row .cat-name {
-      width: 80px;
-    }
-  }
-</style>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -240,6 +16,11 @@
 
   <!-- Month summary -->
   <div class="card">
+    <div class="summary-header">
+      <h2>Monthly Summary</h2>
+      <div class="budget-badge">Budget: <span id="budgetAmount"></span></div>
+    </div>
+
     <div class="month-nav">
       <button id="prevMonth">&lt;</button>
       <div class="month-label" id="monthLabel"></div>
@@ -247,6 +28,11 @@
     </div>
 
     <div class="total-amount" id="totalAmount">¥0</div>
+
+    <div class="balance-row">
+      <span>Balance: <span class="balance-amount" id="balanceAmount">¥0</span></span>
+      <button class="btn-alert" id="alertBtn" style="display:none;">⚠ Low Balance!</button>
+    </div>
 
     <div id="categoryBreakdown"></div>
   </div>
@@ -331,6 +117,8 @@
   const CATEGORY_KEY = "myfamily_categories_v1";
 
   const DEFAULT_CATEGORIES = ["Baby Expenses", "Rent", "Utilities", "Food", "Personal"];
+  const MONTHLY_BUDGET = 60000;
+  const LOW_BALANCE_THRESHOLD = 10000;
 
   /** @returns {Array} */
   function loadExpenses() {
@@ -368,6 +156,9 @@
   const monthLabelEl = document.getElementById("monthLabel");
   const listMonthLabelEl = document.getElementById("listMonthLabel");
   const totalAmountEl = document.getElementById("totalAmount");
+  const budgetAmountEl = document.getElementById("budgetAmount");
+  const balanceAmountEl = document.getElementById("balanceAmount");
+  const alertBtn = document.getElementById("alertBtn");
   const categoryBreakdownEl = document.getElementById("categoryBreakdown");
   const expenseTbody = document.getElementById("expenseTbody");
   const emptyMsg = document.getElementById("emptyMsg");
@@ -411,6 +202,13 @@
     const monthExpenses = expensesForMonth(currentMonth);
     const total = monthExpenses.reduce((sum, e) => sum + e.amount, 0);
     totalAmountEl.textContent = formatYen(total);
+
+    budgetAmountEl.textContent = formatYen(MONTHLY_BUDGET);
+
+    const balance = MONTHLY_BUDGET - total;
+    balanceAmountEl.textContent = formatYen(balance);
+    balanceAmountEl.classList.toggle("low", balance < LOW_BALANCE_THRESHOLD);
+    alertBtn.style.display = balance < LOW_BALANCE_THRESHOLD ? "inline-flex" : "none";
 
     // category breakdown
     const byCategory = {};
