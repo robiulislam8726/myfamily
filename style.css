@@ -134,6 +134,18 @@ main {
   object-position: 50% 35%;
 }
 
+@media (max-width: 767px) {
+  .photo-card .side-photo {
+    height: 360px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-card .side-photo {
+    height: 320px;
+  }
+}
+
 .quick-card {
   padding: 14px;
 }
