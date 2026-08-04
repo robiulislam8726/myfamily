@@ -13,6 +13,28 @@
   <div class="header-note">Sonchita Biswas (কাজের লোক) টাকা চুরি করা যাবে 😊</div>
 </header>
 
+<div class="layout">
+
+  <aside class="side-panel side-left">
+    <div class="card quick-card">
+      <h3>🥦 Vegetables</h3>
+      <div class="quick-grid">
+        <button type="button" class="quick-item" data-category="Food" data-detail="Vegetables">
+          <span class="icon">🥦</span><span class="label">Vegetables</span>
+        </button>
+        <button type="button" class="quick-item" data-category="Food" data-detail="Carrot">
+          <span class="icon">🥕</span><span class="label">Carrot</span>
+        </button>
+        <button type="button" class="quick-item" data-category="Food" data-detail="Onion">
+          <span class="icon">🧅</span><span class="label">Onion</span>
+        </button>
+        <button type="button" class="quick-item" data-category="Food" data-detail="Potato">
+          <span class="icon">🥔</span><span class="label">Potato</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
 <main>
 
   <!-- Month summary -->
@@ -109,6 +131,28 @@
   </div>
 
 </main>
+
+  <aside class="side-panel side-right">
+    <div class="card quick-card">
+      <h3>🍖 Meat &amp; Dairy</h3>
+      <div class="quick-grid">
+        <button type="button" class="quick-item" data-category="Food" data-detail="Meat">
+          <span class="icon">🥩</span><span class="label">Meat</span>
+        </button>
+        <button type="button" class="quick-item" data-category="Food" data-detail="鶏肉 (Chicken)">
+          <span class="icon">🐔</span><span class="label">鶏肉 Chicken</span>
+        </button>
+        <button type="button" class="quick-item" data-category="Food" data-detail="Milk">
+          <span class="icon">🥛</span><span class="label">Milk</span>
+        </button>
+        <button type="button" class="quick-item" data-category="Food" data-detail="Egg">
+          <span class="icon">🥚</span><span class="label">Egg</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+</div>
 
 <script>
 (function () {
@@ -367,6 +411,20 @@
       }
     };
     reader.readAsText(file);
+  });
+
+  document.querySelectorAll(".quick-item").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const category = btn.getAttribute("data-category");
+      const detail = btn.getAttribute("data-detail");
+
+      if (category && categories.includes(category)) {
+        categorySelect.value = category;
+      }
+      document.getElementById("detailInput").value = detail;
+      document.getElementById("expenseForm").scrollIntoView({ behavior: "smooth", block: "center" });
+      document.getElementById("amountInput").focus();
+    });
   });
 
   // init
