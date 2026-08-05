@@ -14,6 +14,7 @@
     <h1>Family Expense</h1>
   </div>
   <div class="header-note header-note-middle">বাসার মালিক রাহা এবং রবিউল ইসলাম, মালিকের বাপ 😎</div>
+  <button type="button" id="eduToggleBtn" class="btn btn-outline edu-toggle-btn">📚 日本語 Education</button>
   <div class="header-note header-note-right">Sonchita Biswas (Home Minister)</div>
 </header>
 
@@ -205,6 +206,39 @@
 </main>
 
   <aside class="side-panel side-right">
+    <div class="card emergency-card">
+      <h3>🚨 Japan Emergency Numbers (👶 Baby)</h3>
+      <ul class="emergency-list">
+        <li>
+          <span class="e-label">👮 Police</span>
+          <a class="e-number" href="tel:110">110</a>
+        </li>
+        <li>
+          <span class="e-label">🚑 Ambulance / Fire</span>
+          <a class="e-number" href="tel:119">119</a>
+        </li>
+        <li>
+          <span class="e-label">⚓ Coast Guard</span>
+          <a class="e-number" href="tel:118">118</a>
+        </li>
+        <li>
+          <span class="e-label">👶 Child Emergency Advice</span>
+          <a class="e-number" href="tel:#8000">#8000</a>
+          <span class="e-note">Nurse/doctor phone advice before calling ambulance</span>
+        </li>
+        <li>
+          <span class="e-label">☎️ Poison Control (中毒110)</span>
+          <span class="e-number e-number-static">072-727-2499</span>
+          <span class="e-note">Osaka center, 24h</span>
+        </li>
+        <li>
+          <span class="e-label">🆘 Child Abuse Hotline</span>
+          <a class="e-number" href="tel:189">189</a>
+          <span class="e-note">Ichi-Hayaku, 24h</span>
+        </li>
+      </ul>
+    </div>
+
     <div class="card quick-card">
       <h3>🍖 Meat &amp; Dairy</h3>
       <div class="quick-grid">
@@ -299,6 +333,121 @@
     </div>
   </aside>
 
+</div>
+
+<div class="modal-overlay" id="eduModal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📚 日本語 Daily Japanese</h2>
+      <button type="button" class="modal-close" id="eduCloseBtn">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <h3>🗣️ Daily Use Vocabulary</h3>
+      <table class="edu-table">
+        <thead>
+          <tr><th>日本語</th><th>Romaji</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>おはようございます</td><td>Ohayou gozaimasu</td><td>Good morning</td></tr>
+          <tr><td>こんにちは</td><td>Konnichiwa</td><td>Hello / Good afternoon</td></tr>
+          <tr><td>こんばんは</td><td>Konbanwa</td><td>Good evening</td></tr>
+          <tr><td>ありがとうございます</td><td>Arigatou gozaimasu</td><td>Thank you</td></tr>
+          <tr><td>すみません</td><td>Sumimasen</td><td>Excuse me / Sorry</td></tr>
+          <tr><td>お願いします</td><td>Onegaishimasu</td><td>Please</td></tr>
+          <tr><td>はい / いいえ</td><td>Hai / Iie</td><td>Yes / No</td></tr>
+          <tr><td>わかりました</td><td>Wakarimashita</td><td>Understood</td></tr>
+          <tr><td>大丈夫です</td><td>Daijoubu desu</td><td>It's okay / I'm fine</td></tr>
+          <tr><td>トイレはどこですか</td><td>Toire wa doko desu ka</td><td>Where is the toilet?</td></tr>
+          <tr><td>いってきます / いってらっしゃい</td><td>Itte kimasu / Itte rasshai</td><td>I'm off / Take care (see-off)</td></tr>
+          <tr><td>ただいま / おかえりなさい</td><td>Tadaima / Okaerinasai</td><td>I'm home / Welcome back</td></tr>
+          <tr><td>いただきます / ごちそうさまでした</td><td>Itadakimasu / Gochisousama deshita</td><td>Before / after eating</td></tr>
+          <tr><td>おやすみなさい</td><td>Oyasuminasai</td><td>Good night</td></tr>
+          <tr><td>ちょっと待ってください</td><td>Chotto matte kudasai</td><td>Please wait a moment</td></tr>
+          <tr><td>大丈夫ですか？</td><td>Daijoubu desu ka?</td><td>Are you okay?</td></tr>
+          <tr><td>手伝ってください</td><td>Tetsudatte kudasai</td><td>Please help me</td></tr>
+          <tr><td>どういたしまして</td><td>Dou itashimashite</td><td>You're welcome</td></tr>
+          <tr><td>元気です</td><td>Genki desu</td><td>I'm fine / doing well</td></tr>
+          <tr><td>頑張ってください</td><td>Ganbatte kudasai</td><td>Good luck / do your best</td></tr>
+        </tbody>
+      </table>
+
+      <h3>🛒 Shopping Sentences</h3>
+      <table class="edu-table">
+        <thead>
+          <tr><th>日本語</th><th>Romaji</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>これはいくらですか？</td><td>Kore wa ikura desu ka?</td><td>How much is this?</td></tr>
+          <tr><td>これをください。</td><td>Kore wo kudasai.</td><td>I'll take this, please.</td></tr>
+          <tr><td>袋はいりますか？</td><td>Fukuro wa irimasu ka?</td><td>Do you need a bag? (cashier asks)</td></tr>
+          <tr><td>レジ袋をください。</td><td>Reji-bukuro wo kudasai.</td><td>A shopping bag, please.</td></tr>
+          <tr><td>カードは使えますか？</td><td>Kaado wa tsukaemasu ka?</td><td>Can I use a card?</td></tr>
+          <tr><td>一番安いのはどれですか？</td><td>Ichiban yasui no wa dore desu ka?</td><td>Which one is the cheapest?</td></tr>
+          <tr><td>これは賞味期限がいつですか？</td><td>Kore wa shoumi kigen ga itsu desu ka?</td><td>What's the best-before date?</td></tr>
+          <tr><td>ポイントカードはありますか？</td><td>Pointo kaado wa arimasu ka?</td><td>Do you have a point card?</td></tr>
+          <tr><td>レシートをください。</td><td>Reshiito wo kudasai.</td><td>Receipt, please.</td></tr>
+          <tr><td>お会計をお願いします。</td><td>Okaikei wo onegaishimasu.</td><td>Check out, please.</td></tr>
+          <tr><td>これは何ですか？</td><td>Kore wa nan desu ka?</td><td>What is this?</td></tr>
+          <tr><td>試着してもいいですか？</td><td>Shichaku shite mo ii desu ka?</td><td>Can I try it on?</td></tr>
+          <tr><td>もう少し安いのはありますか？</td><td>Mou sukoshi yasui no wa arimasu ka?</td><td>Is there a cheaper one?</td></tr>
+          <tr><td>返品できますか？</td><td>Henpin dekimasu ka?</td><td>Can I return this?</td></tr>
+          <tr><td>賞味期限内ですか？</td><td>Shoumi kigen-nai desu ka?</td><td>Is it within the expiration date?</td></tr>
+          <tr><td>温めてもらえますか？</td><td>Atatamete moraemasu ka?</td><td>Can you warm this up?</td></tr>
+          <tr><td>お箸をください。</td><td>Ohashi wo kudasai.</td><td>Chopsticks, please.</td></tr>
+          <tr><td>テイクアウトできますか？</td><td>Teikuauto dekimasu ka?</td><td>Can I get this to go?</td></tr>
+          <tr><td>駐車場はありますか？</td><td>Chuushajou wa arimasu ka?</td><td>Is there a parking lot?</td></tr>
+        </tbody>
+      </table>
+
+      <h3>👶 Baby &amp; Hospital</h3>
+      <table class="edu-table">
+        <thead>
+          <tr><th>日本語</th><th>Romaji</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>予防接種</td><td>Yobou sesshu</td><td>Vaccination</td></tr>
+          <tr><td>母子手帳</td><td>Boshi techou</td><td>Maternal &amp; Child Health Handbook</td></tr>
+          <tr><td>熱があります。</td><td>Netsu ga arimasu.</td><td>(Baby) has a fever.</td></tr>
+          <tr><td>病院はどこですか？</td><td>Byouin wa doko desu ka?</td><td>Where is the hospital?</td></tr>
+          <tr><td>救急車を呼んでください。</td><td>Kyuukyuusha wo yonde kudasai.</td><td>Please call an ambulance.</td></tr>
+          <tr><td>下痢をしています。</td><td>Geri wo shite imasu.</td><td>(Baby) has diarrhea.</td></tr>
+          <tr><td>吐きました。</td><td>Hakimashita.</td><td>(Baby) vomited.</td></tr>
+          <tr><td>咳をしています。</td><td>Seki wo shite imasu.</td><td>(Baby) is coughing.</td></tr>
+          <tr><td>ミルクを飲みません。</td><td>Miruku wo nomimasen.</td><td>(Baby) won't drink milk.</td></tr>
+          <tr><td>おむつを替えてください。</td><td>Omutsu wo kaete kudasai.</td><td>Please change the diaper.</td></tr>
+          <tr><td>保険証</td><td>Hokenshou</td><td>Health insurance card</td></tr>
+        </tbody>
+      </table>
+
+      <h3>🩹 Injury &amp; Bleeding — Calling 119 (けが・出血)</h3>
+      <p class="edu-hint">If Raha gets hurt or is bleeding, dial <strong>119</strong> and use these lines in order. The operator's questions are marked 📞; your answers are marked 🧑.</p>
+      <table class="edu-table edu-table-call">
+        <thead>
+          <tr><th>日本語</th><th>Romaji</th><th>Meaning</th><th>Who</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>火事ですか、救急ですか？</td><td>Kaji desu ka, kyuukyuu desu ka?</td><td>Fire or medical emergency?</td><td>📞 Operator</td></tr>
+          <tr><td>救急です。</td><td>Kyuukyuu desu.</td><td>It's a medical emergency.</td><td>🧑 You say</td></tr>
+          <tr><td>どうしましたか？</td><td>Dou shimashita ka?</td><td>What happened?</td><td>📞 Operator</td></tr>
+          <tr><td>赤ちゃんがけがをしました。</td><td>Akachan ga kega wo shimashita.</td><td>My baby is injured.</td><td>🧑 You say</td></tr>
+          <tr><td>血が出ています。</td><td>Chi ga dete imasu.</td><td>There is bleeding.</td><td>🧑 You say</td></tr>
+          <tr><td>たくさん血が出ています。</td><td>Takusan chi ga dete imasu.</td><td>There is a lot of bleeding.</td><td>🧑 You say</td></tr>
+          <tr><td>頭を強く打ちました。</td><td>Atama wo tsuyoku uchimashita.</td><td>(Baby) hit their head hard.</td><td>🧑 You say</td></tr>
+          <tr><td>やけどをしました。</td><td>Yakedo wo shimashita.</td><td>(Baby) got burned.</td><td>🧑 You say</td></tr>
+          <tr><td>高い熱があります。</td><td>Takai netsu ga arimasu.</td><td>(Baby) has a high fever.</td><td>🧑 You say</td></tr>
+          <tr><td>呼吸がおかしいです。</td><td>Kokyuu ga okashii desu.</td><td>Breathing seems abnormal.</td><td>🧑 You say</td></tr>
+          <tr><td>意識がありません。</td><td>Ishiki ga arimasen.</td><td>(Baby) is unresponsive.</td><td>🧑 You say</td></tr>
+          <tr><td>住所を教えてください。</td><td>Juusho wo oshiete kudasai.</td><td>Please tell me the address.</td><td>📞 Operator</td></tr>
+          <tr><td>住所は◯◯です。</td><td>Juusho wa ___ desu.</td><td>The address is ___.</td><td>🧑 You say</td></tr>
+          <tr><td>お名前と年齢を教えてください。</td><td>Onamae to nenrei wo oshiete kudasai.</td><td>Please tell me the name and age.</td><td>📞 Operator</td></tr>
+          <tr><td>名前は◯◯、生後◯ヶ月です。</td><td>Namae wa ___, seigo ___ kagetsu desu.</td><td>Name is ___, ___ months old.</td><td>🧑 You say</td></tr>
+          <tr><td>救急車をお願いします。</td><td>Kyuukyuusha wo onegaishimasu.</td><td>Please send an ambulance.</td><td>🧑 You say</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
 </div>
 
 <script>
@@ -627,6 +776,27 @@
 
     el.innerHTML = "👶 Raha is " + partsHtml + " old";
   }
+
+  // education modal (daily Japanese)
+  const eduModal = document.getElementById("eduModal");
+  const eduToggleBtn = document.getElementById("eduToggleBtn");
+  const eduCloseBtn = document.getElementById("eduCloseBtn");
+
+  function openEduModal() {
+    eduModal.style.display = "flex";
+  }
+  function closeEduModal() {
+    eduModal.style.display = "none";
+  }
+
+  eduToggleBtn.addEventListener("click", openEduModal);
+  eduCloseBtn.addEventListener("click", closeEduModal);
+  eduModal.addEventListener("click", (event) => {
+    if (event.target === eduModal) closeEduModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && eduModal.style.display !== "none") closeEduModal();
+  });
 
   // init
   dateInput.value = new Date().toISOString().substring(0, 10);
