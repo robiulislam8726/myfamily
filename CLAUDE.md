@@ -1,6 +1,6 @@
 # myfamily
 
-Single-file family expense tracker (`index.html` + `style.css`, plain JS, no build step). Deployed on Netlify, auto-deploys from GitHub `main`.
+Family expense tracker: `index.html` (markup) + `style.css` (styles) + `script.js` (plain JS), no build step. Deployed on Netlify, auto-deploys from GitHub `main`.
 
 ## Git workflow
 
