@@ -689,6 +689,32 @@ td.amount {
   font-weight: 600;
 }
 
+.edu-address-box {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: #fff5f5;
+  border: 1px solid #ffc9c9;
+  border-radius: 6px;
+}
+
+.edu-address-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--danger);
+}
+
+.edu-address-line {
+  font-size: 0.85rem;
+  padding: 2px 0;
+}
+
+.edu-address-lang {
+  display: inline-block;
+  width: 28px;
+  font-weight: 700;
+}
+
 @media (max-width: 480px) {
   .modal-box {
     max-height: 90vh;
