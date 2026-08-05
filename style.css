@@ -146,6 +146,40 @@ main {
   }
 }
 
+.baby-age {
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #d6336c;
+  background: #fff0f6;
+  border-top: 1px solid #ffd6e7;
+}
+
+.baby-age .age-part {
+  display: inline-block;
+  animation: age-part-in 0.5s ease backwards;
+}
+
+.baby-age .age-sep {
+  opacity: 0.7;
+}
+
+@keyframes age-part-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(6px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 .quick-card {
   padding: 14px;
 }

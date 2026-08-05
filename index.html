@@ -22,6 +22,7 @@
   <aside class="side-panel side-left">
     <div class="card photo-card">
       <img src="assets/family-photo.jpg" alt="Family photo" class="side-photo" />
+      <div class="baby-age" id="rahaAge" data-birthdate="2026-04-28">👶 Raha is —</div>
     </div>
 
     <div class="card quick-card">
@@ -585,10 +586,56 @@
     });
   });
 
+  // baby age (auto-updates daily, no manual editing needed)
+  function updateBabyAge() {
+    const el = document.getElementById("rahaAge");
+    if (!el) return;
+
+    const birth = new Date(el.getAttribute("data-birthdate") + "T00:00:00");
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (today < birth) {
+      el.textContent = "👶 Raha arrives soon!";
+      return;
+    }
+
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+
+    if (days < 0) {
+      months--;
+      const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    const parts = [];
+    if (years > 0) parts.push(years + (years === 1 ? " year" : " years"));
+    if (months > 0) parts.push(months + (months === 1 ? " month" : " months"));
+    if (days > 0 || parts.length === 0) parts.push(days + (days === 1 ? " day" : " days"));
+
+    // each part (years/months/days) gets its own span so it can pop in
+    // with a staggered animation whenever the age is (re)rendered
+    const partsHtml = parts
+      .map((p, i) => `<span class="age-part" style="animation-delay:${i * 0.12}s">${p}</span>`)
+      .join('<span class="age-sep">, </span>');
+
+    el.innerHTML = "👶 Raha is " + partsHtml + " old";
+  }
+
   // init
   dateInput.value = new Date().toISOString().substring(0, 10);
   renderCategoryOptions();
   render();
+  updateBabyAge();
+  // recheck periodically so the age rolls over automatically past midnight
+  // if the page is left open
+  setInterval(updateBabyAge, 60 * 60 * 1000);
 })();
 </script>
 
