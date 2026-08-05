@@ -14,7 +14,10 @@
     <h1>Family Expense</h1>
   </div>
   <div class="header-note header-note-middle">বাসার মালিক রাহা এবং রবিউল ইসলাম, মালিকের বাপ 😎</div>
-  <button type="button" id="eduToggleBtn" class="btn btn-outline edu-toggle-btn">📚 日本語 Education</button>
+  <div class="header-btn-group">
+    <button type="button" id="eduToggleBtn" class="btn btn-outline edu-toggle-btn">📚 日本語 Education</button>
+    <button type="button" id="gameToggleBtn" class="btn btn-outline edu-toggle-btn">🎮 Raha's Game</button>
+  </div>
   <div class="header-note header-note-right">Sonchita Biswas (Home Minister)</div>
 </header>
 
@@ -457,6 +460,32 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="gameModal" style="display:none;">
+  <div class="modal-box game-modal-box">
+    <div class="modal-header">
+      <h2>🎮 Raha's Play Time</h2>
+      <button type="button" class="modal-close" id="gameCloseBtn">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="edu-hint">Tap a tile — it pops, wiggles, and makes a sound! 👶</p>
+      <div class="game-grid" id="gameGrid">
+        <button type="button" class="game-item" style="background:#ff8fa3" data-sound="Woof woof!">🐶</button>
+        <button type="button" class="game-item" style="background:#ffd166" data-sound="Meow!">🐱</button>
+        <button type="button" class="game-item" style="background:#a0e7e5" data-sound="Moo!">🐮</button>
+        <button type="button" class="game-item" style="background:#b4f8c8" data-sound="Quack quack!">🦆</button>
+        <button type="button" class="game-item" style="background:#fbe7c6" data-sound="Ribbit!">🐸</button>
+        <button type="button" class="game-item" style="background:#cdb4db" data-sound="Toot toot!">🐘</button>
+        <button type="button" class="game-item" style="background:#ffadad" data-sound="Roar!">🦁</button>
+        <button type="button" class="game-item" style="background:#ffc6ff" data-sound="Oink oink!">🐷</button>
+        <button type="button" class="game-item" style="background:#fdffb6" data-sound="Cluck cluck!">🐔</button>
+        <button type="button" class="game-item" style="background:#9bf6ff" data-sound="Twinkle twinkle!">⭐</button>
+        <button type="button" class="game-item" style="background:#a0c4ff" data-sound="Pop!">🎈</button>
+        <button type="button" class="game-item" style="background:#caffbf" data-sound="Wow, so pretty!">🌈</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
   "use strict";
@@ -803,6 +832,66 @@
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && eduModal.style.display !== "none") closeEduModal();
+  });
+
+  // baby sensory game (tap tiles: pop + wiggle + sound)
+  const gameModal = document.getElementById("gameModal");
+  const gameToggleBtn = document.getElementById("gameToggleBtn");
+  const gameCloseBtn = document.getElementById("gameCloseBtn");
+  const gameGrid = document.getElementById("gameGrid");
+
+  function openGameModal() {
+    gameModal.style.display = "flex";
+  }
+  function closeGameModal() {
+    gameModal.style.display = "none";
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+  }
+
+  gameToggleBtn.addEventListener("click", openGameModal);
+  gameCloseBtn.addEventListener("click", closeGameModal);
+  gameModal.addEventListener("click", (event) => {
+    if (event.target === gameModal) closeGameModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && gameModal.style.display !== "none") closeGameModal();
+  });
+
+  function speakSound(text) {
+    if (!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 0.85;
+    utter.pitch = 1.4;
+    speechSynthesis.speak(utter);
+  }
+
+  const confettiEmojis = ["✨", "🎉", "⭐", "🌟", "💫"];
+
+  function burstConfetti(button) {
+    const rect = button.getBoundingClientRect();
+    for (let i = 0; i < 5; i++) {
+      const particle = document.createElement("span");
+      particle.className = "confetti-particle";
+      particle.textContent = confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)];
+      particle.style.left = (rect.left + rect.width / 2) + "px";
+      particle.style.top = (rect.top + rect.height / 2) + "px";
+      particle.style.setProperty("--drift", (Math.random() * 80 - 40) + "px");
+      document.body.appendChild(particle);
+      particle.addEventListener("animationend", () => particle.remove());
+    }
+  }
+
+  gameGrid.addEventListener("click", (event) => {
+    const btn = event.target.closest(".game-item");
+    if (!btn) return;
+
+    btn.classList.remove("popped");
+    void btn.offsetWidth; // restart animation
+    btn.classList.add("popped");
+
+    speakSound(btn.getAttribute("data-sound"));
+    burstConfetti(btn);
   });
 
   // init
